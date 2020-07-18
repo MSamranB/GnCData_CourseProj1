@@ -1,0 +1,80 @@
+---
+title: "CodeBook"
+author: "MSamranB"
+date: "7/19/2020"
+output: word_document
+---
+
+# CODEBOOK
+This is the Codebook for Course Project of Getting and Cleaning Data Course.  
+The file **run_analysis.R** carries the working code of this course.  
+In this codebook I will explain you all the steps taken to reach our final solution.  
+
+## STEP 1: Unzip the files and load the data in R.
+* *path1* represent file path for subject_train.txt  
+* *path2* represent file path for X_train.txt  
+* *path3* represent file path for Y_train.txt  
+* *path4* represent file path for features.txt  
+* *path5* represent file path for X_test.txt  
+* *path6* represent file path for Y_test.txt  
+* *path7* represent file path for subject_test.txt  
+* *path8* represent file path for subject_train.txt  
+  
+After this we loaded the files in these variables:  
+  
+**features**<-loaded "features.txt" content. The 2nd column of data.frame was subsetted and reloaded in "features" variable.  
+The features selected for this database come from the accelerometer and gyroscope 3-axial raw signals tAcc-XYZ and tGyro-XYZ.
+  
+**X_Train**<-loaded "train\X_train.txt" content.  
+contains recorded features train data. The column names was set to features variable.  
+  
+**Y_Train**<-loaded "train\Y_train.txt" content.  
+contains train data of activities’code labels. The column name was set to *Activity_Code*.  
+  
+**X_Test**<-loaded "test\X_test.txt" content.  
+contains recorded features test data. The column names was set to features variable.    
+  
+**Y_Test**<-loaded "test\Y_test.txt" content.  
+contains test data of activities’code labels. The column names was set to *Activity_Code*.  
+  
+**Subject_Train**<-loaded "train\subject_train.txt" content.  
+contains train data of 21/30 volunteer subjects being observed. The column names was set to *Subject*.  
+  
+**Subject_Test**<-loaded "test\subject_test.txt" content.  
+contains test data of 9/30 volunteer subjects being observed. The column names was set to *Subject*.  
+
+#### STEP:  Uses descriptive activity names to name the activities in the data set.  
+**activities**<-loaded "activity_label.txt" content.  
+List of activities performed when the corresponding measurements were taken and its codes (labels). The column names were set to *Activity_Code* and *Activity_Name*.  
+  
+Please note that all these data frames were converted to be used with dplyr library using the function tbl_df().  
+  
+## STEP 2: Merges the training and the test sets to create one data set.
+#### STEP: Extracts only the measurements on the mean and standard deviation for each measurement.  
+**Xsubset** was created by select() operation on  *X_Train* data for columns containing string *mean* or *std*.  
+  
+**X2subset** was created by select() operation on  *X_Test* data for columns containing string *mean* or *std*.  
+  
+**Subject_Data** was created by bind_row() operation on  *Subject_Train* and *Subject_Test*.  
+  
+**X_Data** was created by bind_rows() operation on  first *Xsubset* and *X2subset*. Then bind_cols() operation on *X_Data* and *Subject_Data*. This variable stored the merged data of train and test X data.  
+  
+**Y_Data** was created by bind_rows() operation on  *Y_Train* and *Y_Test*. This variable stored the merged data of train and test Y data.  
+  
+**TidyData** was created by bind_cols() operation on  *X_Data* and *Y_Data*. Then TidyData was merged with *activities* columns as well using merge() command. Since activities had two columns and we needed only the *Activity_Name* we subsetted TidyData to get only columns 2:89 thus ommitting *Acitivity_Code* column.  
+
+## STEP 3: Appropriately labels the data set with descriptive variable names.  
+All **Acc** in column’s name replaced by **Accelerometer**.  
+All **Gyro** in column’s name replaced by **Gyroscope**.  
+All **BodyBody** in column’s name replaced by **Body**.  
+All **Mag** in column’s name replaced by **Magnitude**.  
+All start with character **f** in column’s name replaced by **Frequency**.  
+All start with character **t** in column’s name replaced by **Time**.  
+  
+## STEP 4: From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.  
+**TidyData2** was created by using group_by() operation on *TidyData* for groups *Subject*, *Activity_Name*.  
+  
+**Final_Data** was created by using summarise_all() operation on *TidyData2* and *func(mean)*. This data provided us with mean of each variable for each activity and each subject.  
+  
+**Final_Data.txt** this file was written with *FinalData* content.  
+  

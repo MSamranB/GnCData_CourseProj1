@@ -1,0 +1,20 @@
+---
+title: "README"
+author: "MSamranB"
+date: "7/19/2020"
+output: word_document
+---
+
+# Peer Graded Course Project 1: Getting and Cleaning Data Course.  
+The project is completed by Mohammad Samran Bashir.  
+  
+**run_analysis.R** file contains the main R coding for this project.  
+  
+**Final_Data.txt** file the output of Step 5 as mentioned in main project instructions.  
+  
+**Codebook.Rmd** file contains the codebook containing all variable details and operations used to achieve them.  
+  
+**README.Rmd** file contains the details about the files uploaded in repository. 
+  
+
+  
